@@ -1,1 +1,3 @@
 # b07lab1
+
+My first github repo. A class for handling polynomials.
