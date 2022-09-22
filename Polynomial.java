@@ -30,6 +30,8 @@ public class Polynomial {
 	}
 	
 	public double evaluate(double x) {
+		if (this.coeffs == null) return 0;
+		
 		double sum = 0;
 		
 		for(int i = 0; i < this.coeffs.length; i++) {
