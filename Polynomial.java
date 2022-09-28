@@ -22,21 +22,37 @@ public class Polynomial {
 		int i = 0;
 	    for(String term : terms) {
 	    	String[] s = term.split("x");
-	    	if(s.length == 1) {
-	    		this.coeffs[i] = Double.parseDouble(s[0]);
-	    		this.exponents[i] = 0;
+	    	if(Double.parseDouble(s[0]) != 0) {
+	    		if(s.length == 1) {
+		    		this.coeffs[i] = Double.parseDouble(s[0]);
+		    		this.exponents[i] = 0;
+		    		if(term.contains("x")) this.exponents[i] = 1;
+		    	}
+		    	if(s.length == 2) {
+		    		this.coeffs[i] = Double.parseDouble(s[0]);
+		    		this.exponents[i] = Integer.parseInt(s[1]);
+		    	}
+		    	i++;
 	    	}
-	    	if(s.length == 2) {
-	    		this.coeffs[i] = Double.parseDouble(s[0]);
-	    		this.exponents[i] = Integer.parseInt(s[1]);
-	    	}
-	    	i++;
 	    }
 	}
 	
 	public Polynomial(double[] coeffs, int[] exponents) {
 		this.coeffs = coeffs;
 		this.exponents = exponents;
+	}
+	
+	public void saveToFile(String file) throws IOException {
+		String result = "";
+		for(int i = 0; i < this.coeffs.length; i++) {
+			if(this.coeffs[i] >= 0) result = result.concat("+");
+			result = result.concat(Double.toString(this.coeffs[i]));
+			result = result.concat("x");
+			result = result.concat(Integer.toString(this.exponents[i]));
+		}
+		FileWriter p = new FileWriter(new File(file));
+		p.write(result);
+		p.close();
 	}
 	
 	public Polynomial add(Polynomial addend) {
@@ -49,7 +65,9 @@ public class Polynomial {
 		Map<Integer, Double> dict = new HashMap<Integer, Double>();
 		
 		for(int i = 0; i < this_len; i++) {
-			dict.put(this.exponents[i], this.coeffs[i]);
+			if(this.coeffs[i] != 0) {
+				dict.put(this.exponents[i], this.coeffs[i]);
+			}
 		}
 		
 		for(int i = 0; i < add_len; i++) {
@@ -57,9 +75,13 @@ public class Polynomial {
 				double value = dict.get(addend.exponents[i]);
 				value += addend.coeffs[i];
 				dict.remove(addend.exponents[i]);
-				dict.put(addend.exponents[i], value);
+				if(value != 0) {
+					dict.put(addend.exponents[i], value);
+				}
 			} else {
-				dict.put(addend.exponents[i], addend.coeffs[i]);
+				if(addend.coeffs[i] != 0) {
+					dict.put(addend.exponents[i], addend.coeffs[i]);
+				}
 			}
 		}
 		
@@ -110,9 +132,9 @@ public class Polynomial {
 					double value = dict.get(rexp);
 					value += rcoeff;
 					dict.remove(rexp);
-					dict.put(rexp, value);
+					if(value != 0) dict.put(rexp, value);
 				} else {
-					dict.put(rexp, rcoeff);
+					if(rcoeff != 0) dict.put(rexp, rcoeff);
 				}
 			}
 		}

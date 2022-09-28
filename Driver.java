@@ -16,8 +16,20 @@ public class Driver {
 			System.out.println("1 is a root of s");
 		else
 			System.out.println("1 is not a root of s");
-		File f = new File("sample.txt");
-		Polynomial q = new Polynomial(f);
+		
+		Polynomial q = new Polynomial(new File("sample.txt"));
 		System.out.println(q.evaluate(3));
+		q.saveToFile("sample2.txt");
+		
+		Polynomial q2 = new Polynomial(new File("sample2.txt"));
+		System.out.println(q2.evaluate(3));
+		
+		double [] c3 = {0, 1, 2, 3, 4, 5};
+		int [] e3 = {0, 1, 2, 3, 4, 5};
+		Polynomial aa = new Polynomial(c3, e3);
+		Polynomial bb = aa.multiply(aa);
+		Polynomial cc = bb.multiply(aa);
+		System.out.println(cc.evaluate(2));
+		cc.saveToFile("sample3.txt");
 	}
 }
