@@ -1,5 +1,7 @@
+import java.io.*;
+
 public class Driver {
-	public static void main(String [] args) {
+	public static void main(String [] args) throws IOException {
 		Polynomial p = new Polynomial();
 		System.out.println(p.evaluate(3));
 		double [] c1 = {6,5};
@@ -13,6 +15,9 @@ public class Driver {
 		if(s.hasRoot(1))
 			System.out.println("1 is a root of s");
 		else
-			System.out.println("1 is not a root of s");		
+			System.out.println("1 is not a root of s");
+		File f = new File("sample.txt");
+		Polynomial q = new Polynomial(f);
+		System.out.println(q.evaluate(3));
 	}
 }

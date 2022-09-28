@@ -1,5 +1,6 @@
 import java.math.*;
 import java.util.*;
+import java.io.*;
 
 public class Polynomial {
 	private double coeffs[];
@@ -10,8 +11,27 @@ public class Polynomial {
 		this.exponents = null;
 	}
 	
-	public Polynomial(File file) {
-		return;
+	public Polynomial(File file) throws IOException {
+		BufferedReader b = new BufferedReader(new FileReader(file));
+		String text = b.readLine();
+		String[] terms = text.split("((?=\\+))|((?=\\-))");
+		
+		this.coeffs = new double[terms.length];
+		this.exponents = new int[terms.length];
+		
+		int i = 0;
+	    for(String term : terms) {
+	    	String[] s = term.split("x");
+	    	if(s.length == 1) {
+	    		this.coeffs[i] = Double.parseDouble(s[0]);
+	    		this.exponents[i] = 0;
+	    	}
+	    	if(s.length == 2) {
+	    		this.coeffs[i] = Double.parseDouble(s[0]);
+	    		this.exponents[i] = Integer.parseInt(s[1]);
+	    	}
+	    	i++;
+	    }
 	}
 	
 	public Polynomial(double[] coeffs, int[] exponents) {
